@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jesús Aguilar — Desarrollador</title>
+  <meta name="description" content="CV profesional de Jesús Aguilar, desarrollador de software." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ─────────────────────────────
+       RESET & TOKENS
+    ───────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0b0b0f;
+      --bg2:       #111117;
+      --surface:   #16161e;
+      --surface2:  #1c1c27;
+      --border:    rgba(255,255,255,0.07);
+      --border2:   rgba(255,255,255,0.12);
+
+      --v1: #5b3f9e;   /* violeta oscuro */
+      --v2: #7c5cbf;   /* violeta base   */
+      --v3: #a076f5;   /* violeta vivo   */
+      --v4: #c4aaff;   /* violeta claro  */
+
+      --t1: #ededf5;   /* texto principal */
+      --t2: #a0a0b8;   /* texto suave     */
+      --t3: #606075;   /* texto muy suave */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--t1);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--v2); border-radius: 2px; }
+
+    /* ─────────────────────────────
+       CURSOR AURORA
+    ───────────────────────────── */
+    #aurora {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    #aurora-blob {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,92,191,0.09) 0%, transparent 65%);
+      transform: translate(-50%, -50%);
+      transition: left 0.6s cubic-bezier(.16,1,.3,1), top 0.6s cubic-bezier(.16,1,.3,1);
+      will-change: left, top;
+    }
+
+    /* ─────────────────────────────
+       NAVBAR
+    ───────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2.5rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      transition: background 0.4s, border-bottom 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(11,11,15,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: var(--t1);
+      text-decoration: none;
+    }
+    .nav-logo em { font-style: normal; color: var(--v3); }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      color: var(--t3);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--v4); }
+
+    .nav-cta {
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      background: rgba(124,92,191,0.15);
+      border: 1px solid rgba(124,92,191,0.3);
+      border-radius: 8px;
+      color: var(--v4);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover {
+      background: rgba(124,92,191,0.25);
+      border-color: var(--v3);
+    }
+
+    /* ─────────────────────────────
+       HERO
+    ───────────────────────────── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 2.5rem 5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: up 0.9s 0.1s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .dot-live {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+      animation: livepulse 2.5s infinite;
+    }
+    @keyframes livepulse {
+      0%,100% { opacity:1; box-shadow: 0 0 8px #4ade80; }
+      50%      { opacity:0.5; box-shadow: 0 0 16px #4ade80; }
+    }
+    .eyebrow-text {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--t3);
+    }
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(4rem, 10vw, 8.5rem);
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: up 0.9s 0.22s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .hero-name .line1 { display: block; color: var(--t1); }
+    .hero-name .line2 {
+      display: block;
+      background: linear-gradient(100deg, var(--v2) 0%, var(--v3) 50%, var(--v4) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      color: var(--t2);
+      font-weight: 300;
+      line-height: 1.8;
+      max-width: 460px;
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      animation: up 0.9s 0.34s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .hero-sub strong { color: var(--t1); font-weight: 500; }
+
+    .hero-btns {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: up 0.9s 0.46s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.8rem 1.6rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.22s;
+      border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--v2), var(--v3));
+      color: #fff;
+      box-shadow: 0 4px 30px rgba(124,92,191,0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px rgba(124,92,191,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--t2);
+      border: 1px solid var(--border2);
+    }
+    .btn-outline:hover {
+      border-color: rgba(124,92,191,0.5);
+      color: var(--v4);
+      background: rgba(124,92,191,0.06);
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      animation: fadein 1s 1.4s forwards;
+    }
+    .scroll-cue span {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--t3);
+    }
+    .scroll-cue-bar {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--v2), transparent);
+      animation: barrun 2s 1.4s infinite;
+    }
+    @keyframes barrun {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      49%  { transform: scaleY(1); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ─────────────────────────────
+       SECTION SHARED
+    ───────────────────────────── */
+    section {
+      padding: 7rem 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+    .sep {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border2) 30%, var(--border2) 70%, transparent);
+      margin: 0 2.5rem;
+      position: relative; z-index: 1;
+    }
+
+    .s-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--v3);
+      display: flex; align-items: center; gap: 0.7rem;
+      margin-bottom: 1rem;
+    }
+    .s-label::before {
+      content: '';
+      display: block; width: 20px; height: 1px;
+      background: var(--v3);
+    }
+
+    .s-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--t1);
+      margin-bottom: 4rem;
+    }
+
+    /* ─────────────────────────────
+       SOBRE MÍ
+    ───────────────────────────── */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 6rem;
+      align-items: start;
+    }
+    .about-body p {
+      font-size: 0.95rem;
+      color: var(--t2);
+      line-height: 1.85;
+      margin-bottom: 1.4rem;
+      font-weight: 300;
+    }
+    .about-body p strong { color: var(--t1); font-weight: 500; }
+    .about-body p:last-child { margin-bottom: 0; }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+    }
+    .about-card-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .about-card-row:first-child { padding-top: 0; }
+    .about-card-row:last-child  { padding-bottom: 0; border-bottom: none; }
+    .about-card-icon {
+      font-size: 1.1rem;
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      background: rgba(124,92,191,0.12);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .about-card-text { flex: 1; }
+    .about-card-label { font-size: 0.68rem; color: var(--t3); text-transform: uppercase; letter-spacing: 0.1em; }
+    .about-card-value { font-size: 0.88rem; color: var(--t1); font-weight: 500; margin-top: 0.1rem; }
+
+    /* ─────────────────────────────
+       SKILLS
+    ───────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .skill-cell {
+      background: var(--surface);
+      padding: 2rem;
+      transition: background 0.25s;
+    }
+    .skill-cell:hover { background: var(--surface2); }
+
+    .skill-cell-icon {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .skill-cell-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 0.85rem;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .tag {
+      font-size: 0.73rem;
+      color: var(--t2);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border2);
+      padding: 0.22rem 0.65rem;
+      border-radius: 5px;
+      transition: all 0.18s;
+    }
+    .tag:hover {
+      background: rgba(124,92,191,0.14);
+      border-color: rgba(124,92,191,0.4);
+      color: var(--v4);
+    }
+
+    /* ─────────────────────────────
+       EDUCACIÓN
+    ───────────────────────────── */
+    .edu-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem 2rem;
+      align-items: start;
+      transition: all 0.25s;
+    }
+    .edu-card:hover {
+      border-color: rgba(124,92,191,0.35);
+      background: var(--surface2);
+    }
+
+    .edu-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--t1);
+      margin-bottom: 0.3rem;
+    }
+    .edu-institution {
+      font-size: 0.83rem;
+      color: var(--v3);
+    }
+    .edu-desc {
+      font-size: 0.82rem;
+      color: var(--t3);
+      margin-top: 0.65rem;
+      line-height: 1.65;
+      grid-column: 1 / -1;
+    }
+    .edu-badge {
+      font-size: 0.7rem;
+      color: var(--v4);
+      background: rgba(124,92,191,0.12);
+      border: 1px solid rgba(124,92,191,0.25);
+      padding: 0.25rem 0.8rem;
+      border-radius: 100px;
+      white-space: nowrap;
+      align-self: start;
+    }
+
+    /* ─────────────────────────────
+       CONTACTO
+    ───────────────────────────── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .contact-headline {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--t1);
+      margin-bottom: 1.25rem;
+    }
+    .contact-headline em {
+      font-style: normal;
+      background: linear-gradient(100deg, var(--v3), var(--v4));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .contact-sub {
+      font-size: 0.9rem;
+      color: var(--t2);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+    .c-link {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.22s;
+      color: var(--t1);
+    }
+    .c-link:hover {
+      border-color: rgba(124,92,191,0.4);
+      background: var(--surface2);
+      transform: translateX(4px);
+    }
+    .c-link-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(124,92,191,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .c-link-body { flex: 1; }
+    .c-link-label { font-size: 0.67rem; color: var(--t3); text-transform: uppercase; letter-spacing: 0.1em; }
+    .c-link-value { font-size: 0.87rem; font-weight: 500; margin-top: 0.1rem; }
+    .c-link-arrow { color: var(--t3); font-size: 0.85rem; }
+
+    /* ─────────────────────────────
+       FOOTER
+    ───────────────────────────── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p { font-size: 0.78rem; color: var(--t3); }
+    footer span { color: var(--v3); }
+    .footer-brand {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--t3);
+      letter-spacing: -0.01em;
+    }
+    .footer-brand em { font-style: normal; color: var(--v3); }
+
+    /* ─────────────────────────────
+       REVEAL ON SCROLL
+    ───────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s, transform 0.75s;
+    }
+    .reveal.show { opacity: 1; transform: none; }
+
+    /* ─────────────────────────────
+       KEYFRAMES
+    ───────────────────────────── */
+    @keyframes up {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: none; }
+    }
+    @keyframes fadein {
+      from { opacity:0; }
+      to   { opacity:1; }
+    }
+
+    /* ─────────────────────────────
+       RESPONSIVE
+    ───────────────────────────── */
+    @media (max-width: 860px) {
+      .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links, .nav-cta { display: none; }
+    }
+    @media (max-width: 540px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      section { padding: 5rem 1.5rem; }
+      .sep { margin: 0 1.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Aurora cursor -->
+  <div id="aurora"><div id="aurora-blob"></div></div>
+
+  <!-- ── NAV ── -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">J<em>.</em>Aguilar</a>
+      <ul class="nav-links">
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#educacion">Educación</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a href="#contacto" class="nav-cta">Hablemos</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <div class="hero" id="inicio">
+    <div class="hero-inner">
+
+      <div class="hero-eyebrow">
+        <div class="dot-live"></div>
+        <span class="eyebrow-text">Abierto a oportunidades</span>
+      </div>
+
+      <h1 class="hero-name">
+        <span class="line1">Jesús</span>
+        <span class="line2">Aguilar</span>
+      </h1>
+
+      <p class="hero-sub">
+        <strong>Desarrollador de software</strong> con ganas de aprender,
+        crecer y construir cosas que valgan la pena. Orientado al detalle
+        y al trabajo en equipo.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#contacto" class="btn btn-primary">
+          Contactarme
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#sobre-mi" class="btn btn-outline">Ver más sobre mí</a>
+      </div>
+
+    </div>
+
+    <div class="scroll-cue">
+      <div class="scroll-cue-bar"></div>
+      <span>scroll</span>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- ── SOBRE MÍ ── -->
+  <section id="sobre-mi">
+    <div class="wrap">
+      <div class="s-label">Sobre mí</div>
+      <h2 class="s-title">¿Quién soy?</h2>
+
+      <div class="about-layout">
+
+        <div class="about-body reveal">
+          <p>
+            Hola, soy <strong>Jesús Aguilar</strong>. Me apasiona el desarrollo de software
+            y todo lo que implica construir productos digitales — desde la lógica detrás
+            de una aplicación hasta la experiencia que tiene quien la usa.
+          </p>
+          <p>
+            Estoy en una etapa donde cada proyecto y cada línea de código son una
+            oportunidad de aprender algo nuevo. Me tomo en serio la calidad,
+            los detalles y trabajar en equipo.
+          </p>
+          <p>
+            Busco mi primera oportunidad profesional donde pueda aportar energía,
+            compromiso y seguir creciendo junto a un equipo que comparta las mismas ganas.
+          </p>
+        </div>
+
+        <div class="about-card reveal" style="transition-delay:.12s">
+          <div class="about-card-row">
+            <div class="about-card-icon">📍</div>
+            <div class="about-card-text">
+              <div class="about-card-label">Ubicación</div>
+              <div class="about-card-value">Argentina</div>
+            </div>
+          </div>
+          <div class="about-card-row">
+            <div class="about-card-icon">💬</div>
+            <div class="about-card-text">
+              <div class="about-card-label">Idiomas</div>
+              <div class="about-card-value">Español · Inglés básico</div>
+            </div>
+          </div>
+          <div class="about-card-row">
+            <div class="about-card-icon">🎯</div>
+            <div class="about-card-text">
+              <div class="about-card-label">Disponibilidad</div>
+              <div class="about-card-value">Inmediata</div>
+            </div>
+          </div>
+          <div class="about-card-row">
+            <div class="about-card-icon">🔍</div>
+            <div class="about-card-text">
+              <div class="about-card-label">Modalidad</div>
+              <div class="about-card-value">Remoto / Híbrido</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── SKILLS ── -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="s-label">Stack</div>
+      <h2 class="s-title">Tecnologías que manejo</h2>
+
+      <div class="skills-grid reveal">
+
+        <div class="skill-cell">
+          <div class="skill-cell-icon">🌐</div>
+          <div class="skill-cell-title">HTML</div>
+          <p style="font-size:0.82rem;color:var(--t3);line-height:1.7;margin-bottom:1rem;">Estructuro el contenido de la web de forma semántica y accesible. Sé cómo organizar un documento HTML correctamente.</p>
+          <div class="tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">Semántica</span>
+            <span class="tag">Formularios</span>
+            <span class="tag">Accesibilidad</span>
+          </div>
+        </div>
+
+        <div class="skill-cell">
+          <div class="skill-cell-icon">🎨</div>
+          <div class="skill-cell-title">CSS</div>
+          <p style="font-size:0.82rem;color:var(--t3);line-height:1.7;margin-bottom:1rem;">Doy estilo y vida a las interfaces. Manejo layouts modernos, animaciones y diseño responsivo.</p>
+          <div class="tags">
+            <span class="tag">CSS3</span>
+            <span class="tag">Flexbox</span>
+            <span class="tag">Grid</span>
+            <span class="tag">Animaciones</span>
+            <span class="tag">Responsivo</span>
+          </div>
+        </div>
+
+        <div class="skill-cell">
+          <div class="skill-cell-icon">⚡</div>
+          <div class="skill-cell-title">JavaScript</div>
+          <p style="font-size:0.82rem;color:var(--t3);line-height:1.7;margin-bottom:1rem;">El lenguaje principal con el que pienso y resuelvo problemas. Manejo lógica, DOM, eventos y asincronía.</p>
+          <div class="tags">
+            <span class="tag">ES6+</span>
+            <span class="tag">DOM</span>
+            <span class="tag">Fetch / Async</span>
+            <span class="tag">Eventos</span>
+            <span class="tag">Arrays & objetos</span>
+          </div>
+        </div>
+
+        <div class="skill-cell">
+          <div class="skill-cell-icon">⚛️</div>
+          <div class="skill-cell-title">React</div>
+          <p style="font-size:0.82rem;color:var(--t3);line-height:1.7;margin-bottom:1rem;">Construyo interfaces de usuario con componentes reutilizables. Trabajo con hooks, estado y props.</p>
+          <div class="tags">
+            <span class="tag">Componentes</span>
+            <span class="tag">useState</span>
+            <span class="tag">useEffect</span>
+            <span class="tag">Props</span>
+            <span class="tag">JSX</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── EDUCACIÓN ── -->
+  <section id="educacion">
+    <div class="wrap">
+      <div class="s-label">Formación</div>
+      <h2 class="s-title">Educación</h2>
+
+      <div class="edu-list">
+
+        <div class="edu-card reveal">
+          <div>
+            <div class="edu-title">Técnico en Programación</div>
+            <div class="edu-institution">— Institución / Universidad —</div>
+          </div>
+          <div class="edu-badge">En curso</div>
+          <div class="edu-desc">
+            Reemplazá esto con tu carrera y dónde la estás cursando.
+          </div>
+        </div>
+
+        <div class="edu-card reveal" style="transition-delay:.1s">
+          <div>
+            <div class="edu-title">Curso / Bootcamp</div>
+            <div class="edu-institution">— Plataforma / Escuela —</div>
+          </div>
+          <div class="edu-badge">Completado</div>
+          <div class="edu-desc">
+            Reemplazá con cursos reales que hayas tomado (Udemy, Platzi, Coderhouse, etc.)
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="sep"></div>
+
+  <!-- ── CONTACTO ── -->
+  <section id="contacto">
+    <div class="wrap">
+      <div class="contact-layout">
+
+        <div class="reveal">
+          <div class="s-label">Contacto</div>
+          <h2 class="contact-headline">
+            ¿Tenés un<br/>proyecto o una<br/><em>oportunidad?</em>
+          </h2>
+          <p class="contact-sub">
+            Estoy buscando mi primer rol profesional. Si creés que puedo sumar
+            a tu equipo, escribime — respondo rápido.
+          </p>
+        </div>
+
+        <div class="contact-links reveal" style="transition-delay:.15s">
+
+          <a href="mailto:Jesusraguilar21@gmail.com" class="c-link" id="email-link">
+            <div class="c-link-icon">✉️</div>
+            <div class="c-link-body">
+              <div class="c-link-label">Email</div>
+              <div class="c-link-value">Jesusraguilar21@gmail.com</div>
+            </div>
+            <div class="c-link-arrow">→</div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/jesus-aguilar-1916122a6/" target="_blank" rel="noopener" class="c-link" id="linkedin-link">
+            <div class="c-link-icon">💼</div>
+            <div class="c-link-body">
+              <div class="c-link-label">LinkedIn</div>
+              <div class="c-link-value">linkedin.com/in/jesus-aguilar</div>
+            </div>
+            <div class="c-link-arrow">→</div>
+          </a>
+
+          <a href="https://github.com" target="_blank" rel="noopener" class="c-link" id="github-link">
+            <div class="c-link-icon">⌨️</div>
+            <div class="c-link-body">
+              <div class="c-link-label">GitHub</div>
+              <div class="c-link-value">github.com/jesusaguilar</div>
+            </div>
+            <div class="c-link-arrow">→</div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-brand">J<em>.</em>Aguilar</div>
+    <p>Hecho con ♥ · <span>2026</span></p>
+  </footer>
+
+  <!-- ── JS ── -->
+  <script>
+    // Aurora cursor blob
+    const blob = document.getElementById('aurora-blob');
+    document.addEventListener('mousemove', e => {
+      blob.style.left = e.clientX + 'px';
+      blob.style.top  = e.clientY + 'px';
+    });
+
+    // Navbar on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('show');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+  </script>
+</body>
+</html>
